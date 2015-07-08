@@ -23,7 +23,8 @@ public:
 	void draw(float time, MinVR::CameraRef camera, MinVR::WindowRef window);
 
 private:
-	GLuint _vboId;
+	GLuint VBO, VAO;
+    GLint vertexShader, fragmentShader, shaderProgram;
 	Box _boundingBox;
 };
 
