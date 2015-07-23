@@ -56,6 +56,10 @@ private:
     float _tempScale;
     GLchar* _path;
 
+    float _zoom;
+    float _Yangle;
+    float _Xangle;
+
     void loadModel(std::string path);
     void processNodeTextures(aiNode *node, const aiScene *scene);
     vector<Texture> processMeshTextures(aiMesh *mesh, const aiScene *scene);

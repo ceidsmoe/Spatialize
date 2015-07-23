@@ -27,6 +27,8 @@ SpatializeApp::SpatializeApp(GLchar *path = NULL) : MinVR::AbstractMVRApp() {
 	_tempScale = 1.0f;
 	_scale = 1.0f;
     _path = path;
+    _zoom = 0.0f;
+    _Yangle = 0.0f;
     if (_path)
         this->loadModel(_path);
 }
@@ -210,6 +212,54 @@ void SpatializeApp::doUserInputAndPreDrawComputation(
 			_scale1 = _scale0;
 			_tempScale = 1.0f;
 		}
+        else if (MinVR::startsWith(name, "kbd_DOWN_down"))
+        {
+            _zoom -= 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_DOWN_repeat"))
+        {
+            _zoom -= 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_UP_up"))
+        {
+            _zoom += 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_UP_repeat"))
+        {
+            _zoom += 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_RIGHT_down"))
+        {
+            _Yangle += 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_RIGHT_repeat"))
+        {
+            _Yangle += 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_LEFT_down"))
+        {
+            _Yangle -= 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_LEFT_repeat"))
+        {
+            _Yangle -= 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_DOWN_SHIFT_down"))
+        {
+            _Xangle += 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_DOWN_SHIFT_repeat"))
+        {
+            _Xangle += 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_UP_SHIFT_down"))
+        {
+            _Xangle -= 1.0f;
+        }
+        else if (MinVR::startsWith(name, "kbd_UP_SHIFT_repeat"))
+        {
+            _Xangle -= 1.0f;
+        }   
 	}
 
 	_time = glfwGetTime();
@@ -319,7 +369,10 @@ void SpatializeApp::drawGraphics(int threadId, MinVR::AbstractCameraRef camera,
     else 
         cameraDistance = box.getHigh().y - box.getLow().y;
 
-    glm::mat4 modelView = glm::translate(glm::mat4(1.0f), glm::vec3(-box.center().x, -box.center().y, -cameraDistance + -box.center().z));
+    glm::mat4 modelView = glm::translate(glm::mat4(1.0f), glm::vec3(-box.center().x, -box.center().y, -cameraDistance + -box.center().z + _zoom));
+    modelView = glm::rotate(modelView, _Yangle, glm::vec3(0.0f, 1.0f, 0.0f));
+    modelView = glm::rotate(modelView, _Xangle, glm::vec3(1.0f, 0.0f, 0.0f));
+    //std::cout << glm::to_string(modelView) << std::endl;
 
     glm::mat4 objectToWorld = modelView;
  
