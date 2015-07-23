@@ -369,9 +369,11 @@ void SpatializeApp::drawGraphics(int threadId, MinVR::AbstractCameraRef camera,
     else 
         cameraDistance = box.getHigh().y - box.getLow().y;
 
-    glm::mat4 modelView = glm::translate(glm::mat4(1.0f), glm::vec3(-box.center().x, -box.center().y, -cameraDistance + -box.center().z + _zoom));
+    glm::mat4 modelView = glm::translate(glm::mat4(1.0f), glm::vec3(-box.center().x, 0.0f, -cameraDistance + -box.center().z + _zoom));
     modelView = glm::rotate(modelView, _Yangle, glm::vec3(0.0f, 1.0f, 0.0f));
     modelView = glm::rotate(modelView, _Xangle, glm::vec3(1.0f, 0.0f, 0.0f));
+    modelView = glm::translate(modelView, glm::vec3(0.0f, -box.center().y, 0.0f));
+
     //std::cout << glm::to_string(modelView) << std::endl;
 
     glm::mat4 objectToWorld = modelView;
