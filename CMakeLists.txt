@@ -150,6 +150,7 @@ set(soil_INSTALL_DIR "${Spatialize_INSTALL_PREFIX}/SOIL")
 
 if (BUILD_DEPENDENCIES)
   set(assimp_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${assimp_INSTALL_DIR} -DBUILD_SHARED_LIBS=OFF -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_SAMPLES=OFF -DASSIMP_ENABLE_BOOST_WORKAROUND=ON -DASSIMP_BUILD_TESTS=OFF )
+  set(soil_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${soil_INSTALL_DIR} -DBUILD_SHARED_LIBS=OFF)
   set(assimp_DIR "${assimp_INSTALL_DIR}")
   set(soil_DIR "${soil_INSTALL_DIR}")
 
@@ -176,13 +177,12 @@ if (BUILD_DEPENDENCIES)
 		DEPENDS assimp		
 		PREFIX ${soil_PREFIX}
 		URL http://www.lonesock.net/files/soil.zip
-		CONFIGURE_COMMAND "" #mkdir -p ${soil_PREFIX}/src/SOIL/projects/makefile/obj
-		BINARY_DIR "${CMAKE_SOURCE_DIR}/SOIL_makefile"		
-		BUILD_COMMAND make
+		CONFIGURE_COMMAND cp "${CMAKE_SOURCE_DIR}/SOIL_makefile/CMakeLists.txt" "${soil_PREFIX}/src/SOIL/CMakeLists.txt" #mkdir -p ${soil_PREFIX}/src/SOIL/projects/makefile/obj
+		#BINARY_DIR "${CMAKE_SOURCE_DIR}/SOIL_makefile"		
+		#BUILD_COMMAND make
 		INSTALL_DIR ${soil_INSTALL_DIR}
-		INSTALL_COMMAND make install
+		#INSTALL_COMMAND make install
 		UPDATE_COMMAND ""
-		PATCH_COMMAND ""
    )
 
    set_property(TARGET SOIL PROPERTY FOLDER "Dependencies")
@@ -196,6 +196,7 @@ set(ASSIMP_INCLUDE_DIR ${assimp_INSTALL_DIR}/include CACHE INTERNAL "Directory o
 set(SOIL_INCLUDE_DIR ${soil_INSTALL_DIR}/include CACHE INTERNAL "Directory of SOIL header files")
 if(MSVC)
 	set(ASSIMP_LIBRARY ${assimp_INSTALL_DIR}/lib/assimp.lib CACHE INTERNAL "assimp lib file")
+	set(ASSIMP_LIBRARY ${assimp_INSTALL_DIR}/lib/assimpd.lib CACHE INTERNAL "assimp debug lib file")
 	set(SOIL_LIBRARY ${soil_INSTALL_DIR}/lib/SOIL.lib CACHE INTERNAL "SOIL lib file")
 else()
 	set(ASSIMP_LIBRARY ${assimp_INSTALL_DIR}/lib/libassimp.a CACHE INTERNAL "assimp lib file")

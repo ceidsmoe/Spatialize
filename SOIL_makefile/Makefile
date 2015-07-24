@@ -42,7 +42,7 @@ clean:
 	$(DELETER) $(OBJ) $(BIN)
 
 install: $(BIN)
-	@echo Installing to: $(LOCAL)/lib/dasdfds and $(LOCAL)/include...
+	@echo Installing to: $(LOCAL)/lib and $(LOCAL)/include...
 	@echo -------------------------------------------------------------------
 	mkdir -p $(LOCAL)/lib
 	mkdir -p $(LOCAL)/include
