@@ -10,7 +10,6 @@
 #include "example/ExampleCube.h"
 #include "MVRCore/StringUtils.H"
 #include "VRModel.h"
-#include <unistd.h>
 
 using namespace MinVR;
 

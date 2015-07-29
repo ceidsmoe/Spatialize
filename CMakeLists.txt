@@ -91,7 +91,7 @@ endif()
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   # Linux specific code
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11") 
-	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lSOIL")
+	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 	set(Lib_Config "none")
 	set(MinVR_LIBS)
 	FOREACH (LIB ${MinVR_LIBRARIES})
@@ -150,6 +150,7 @@ set(soil_INSTALL_DIR "${Spatialize_INSTALL_PREFIX}/SOIL")
 
 if (BUILD_DEPENDENCIES)
   set(assimp_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${assimp_INSTALL_DIR} -DBUILD_SHARED_LIBS=OFF -DASSIMP_BUILD_ASSIMP_TOOLS=OFF -DASSIMP_BUILD_SAMPLES=OFF -DASSIMP_ENABLE_BOOST_WORKAROUND=ON -DASSIMP_BUILD_TESTS=OFF )
+  set(soil_CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${soil_INSTALL_DIR} -DBUILD_SHARED_LIBS=OFF)
   set(assimp_DIR "${assimp_INSTALL_DIR}")
   set(soil_DIR "${soil_INSTALL_DIR}")
 
@@ -173,16 +174,13 @@ if (BUILD_DEPENDENCIES)
    set_property(TARGET assimp PROPERTY FOLDER "Dependencies")
 
    ExternalProject_add(SOIL
-		DEPENDS assimp		
+		#DEPENDS assimp		
 		PREFIX ${soil_PREFIX}
 		URL http://www.lonesock.net/files/soil.zip
-		CONFIGURE_COMMAND "" #mkdir -p ${soil_PREFIX}/src/SOIL/projects/makefile/obj
-		BINARY_DIR "${CMAKE_SOURCE_DIR}/SOIL_makefile"		
-		BUILD_COMMAND make
+		CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/dependencies/SOIL_makefile/CMakeLists.txt" "${soil_PREFIX}/src/SOIL/CMakeLists.txt" && ${CMAKE_COMMAND} -E copy "${soil_PREFIX}/src/SOIL/src/SOIL.h" "${soil_PREFIX}/src/SOIL/SOIL.h"
 		INSTALL_DIR ${soil_INSTALL_DIR}
-		INSTALL_COMMAND make install
+		CMAKE_ARGS ${soil_CMAKE_ARGS}
 		UPDATE_COMMAND ""
-		PATCH_COMMAND ""
    )
 
    set_property(TARGET SOIL PROPERTY FOLDER "Dependencies")
